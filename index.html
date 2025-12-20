@@ -328,7 +328,7 @@
             border-radius: 16px;
             margin-bottom: 24px;
             border: 2px solid #5b3a82;
-            overflow: hidden;
+            overflow: visible;
         }
         
         .analytics-header {
@@ -393,8 +393,9 @@
         }
         
         .analytics-content.open {
-            max-height: 800px;
+            max-height: 5000px;
             padding: 0 20px 20px 20px;
+            overflow: visible;
         }
         
         .analytics-description {
@@ -458,6 +459,7 @@
         .insights-display {
             margin-top: 16px;
             display: none;
+            overflow: visible;
         }
         
         .insights-display.show {
@@ -788,6 +790,22 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
+        .disclaimer {
+            background: rgba(255, 255, 255, 0.9);
+            border-left: 4px solid #e31837;
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-top: 16px;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .disclaimer strong {
+            color: #e31837;
+            font-weight: 700;
+        }
+        
         .info-guide {
             margin-top: 32px;
             padding: 20px;
@@ -934,18 +952,45 @@
             html, body {
                 overflow-y: auto !important;
                 -webkit-overflow-scrolling: touch;
+                height: auto !important;
+                min-height: 100vh !important;
             }
             
             body { 
                 padding: 10px;
-                padding-bottom: 120px;
+                padding-bottom: 150px;
             }
+            
+            .calculator {
+                min-height: auto;
+                margin-bottom: 40px;
+            }
+            
+            .glass-card {
+                min-height: auto;
+                overflow: visible !important;
+            }
+            
             .header { padding: 20px 16px; }
             .header h1 { font-size: 1.3rem; }
+            
             .form-body { 
                 padding: 20px 16px;
-                padding-bottom: 100px;
+                padding-bottom: 60px;
+                min-height: auto;
+                overflow: visible !important;
             }
+            
+            .analytics-content.open {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+            
+            .insights-display {
+                overflow: visible !important;
+                max-height: none !important;
+            }
+            
             .action-buttons { flex-direction: column; }
             .btn-accent.show { display: block; width: 100%; }
             .target-overview { grid-template-columns: 1fr; }
@@ -958,7 +1003,7 @@
             body { background: white; padding: 0; }
             body::before { display: none; }
             .glass-card { box-shadow: none; }
-            .action-buttons, .info-guide { display: none; }
+            .action-buttons, .info-guide, .analytics-section { display: none; }
             .results { display: block !important; }
         }
     </style>
@@ -1094,6 +1139,10 @@
                             <span class="label">Total Bonus</span>
                             <span class="amount" id="totalAmount">$0</span>
                         </div>
+                    </div>
+                    
+                    <div class="disclaimer">
+                        <strong>⚠️ Important Notice:</strong> This calculator provides an estimate only and does not guarantee bonus eligibility or payout amount. For complete information regarding bonus structure and eligibility requirements, please contact your Center Manager or Josh.
                     </div>
                 </div>
 
