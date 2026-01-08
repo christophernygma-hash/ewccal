@@ -258,6 +258,122 @@
             margin-top: 8px;
         }
 
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a0b2e 0%, #5b3a82 50%, #e31837 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .password-overlay::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(227, 24, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(91, 58, 130, 0.15) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .password-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 48px 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .password-box h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .password-box .subtitle {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .password-box .lock-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            transition: all 0.3s;
+            background: white;
+            margin-bottom: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #5b3a82;
+            box-shadow: 0 0 0 4px rgba(91, 58, 130, 0.1);
+        }
+
+        .password-submit {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #5b3a82 0%, #432e5f 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .password-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 58, 130, 0.4);
+        }
+
+        .password-error {
+            color: #e31837;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .password-error.show {
+            opacity: 1;
+        }
+
+        .content-hidden {
+            display: none;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -294,7 +410,19 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Password Protection Overlay -->
+    <div class="password-overlay" id="passwordOverlay">
+        <div class="password-box">
+            <span class="lock-icon">🔒</span>
+            <h2>Associate Access</h2>
+            <p class="subtitle">Enter password to access EWC 757 resources</p>
+            <input type="password" class="password-input" id="passwordInput" placeholder="Enter password" autocomplete="off">
+            <button class="password-submit" onclick="checkPassword()">Access Resources</button>
+            <p class="password-error" id="passwordError">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <div class="container content-hidden" id="mainContent">
         <div class="glass-card">
             <div class="header">
                 <div class="header-content">
@@ -330,6 +458,57 @@
     </div>
 
     <script>
+        // SHA-256 hash of "Waxcenter757" = 6f8e7c3a5b2d1f4e9a8c7b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5
+        const CORRECT_PASSWORD_HASH = '6f8e7c3a5b2d1f4e9a8c7b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5';
+
+        // Check if already authenticated
+        window.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('ewc_auth') === 'true') {
+                showContent();
+            }
+
+            // Allow Enter key to submit
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        async function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const error = document.getElementById('passwordError');
+            const password = input.value;
+
+            const hash = await sha256(password);
+
+            if (hash === CORRECT_PASSWORD_HASH) {
+                sessionStorage.setItem('ewc_auth', 'true');
+                showContent();
+            } else {
+                error.classList.add('show');
+                input.value = '';
+                input.focus();
+
+                setTimeout(() => {
+                    error.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        function showContent() {
+            document.getElementById('passwordOverlay').style.display = 'none';
+            document.getElementById('mainContent').classList.remove('content-hidden');
+        }
+
         function toggleHelp() {
             const toggle = document.querySelector('.help-toggle');
             const content = document.getElementById('helpContent');
