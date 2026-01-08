@@ -222,6 +222,42 @@
             font-weight: 700;
         }
 
+        .help-toggle {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .help-toggle:hover {
+            color: #5b3a82;
+            transform: translateY(-1px);
+        }
+
+        .help-toggle::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+
+        .help-toggle.open::after {
+            transform: rotate(180deg);
+        }
+
+        .help-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, margin-top 0.3s;
+            margin-top: 0;
+        }
+
+        .help-content.open {
+            max-height: 100px;
+            margin-top: 8px;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -285,9 +321,22 @@
             </div>
 
             <div class="footer">
-                <p><strong>Need Help?</strong><br>Contact your Center Manager or Josh for questions about bonuses, targets, or tool usage.</p>
+                <p>
+                    <strong class="help-toggle" onclick="toggleHelp()">Need Help?</strong>
+                    <span class="help-content" id="helpContent"><br>Contact your Center Manager or Josh for questions about bonuses, targets, or tool usage.</span>
+                </p>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleHelp() {
+            const toggle = document.querySelector('.help-toggle');
+            const content = document.getElementById('helpContent');
+
+            toggle.classList.toggle('open');
+            content.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>
