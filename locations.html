@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Locations | European Wax Center 757</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a0b2e 0%, #5b3a82 50%, #e31837 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(227, 24, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(91, 58, 130, 0.15) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: slideIn 0.6s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #5b3a82;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            transform: translateX(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e31837 0%, #c91530 100%);
+            padding: 48px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.03) 10px, rgba(255, 255, 255, 0.03) 20px);
+            animation: shimmer 20s linear infinite;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 48px 32px;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .location-card {
+            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 28px;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #5b3a82, #e31837);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .location-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            border-color: rgba(91, 58, 130, 0.3);
+        }
+
+        .location-card:hover::before {
+            opacity: 1;
+        }
+
+        .location-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .location-name::before {
+            content: '📍';
+            font-size: 1.4rem;
+        }
+
+        .location-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #5b3a82, #7b5ba2);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-text strong {
+            display: block;
+            color: #5b3a82;
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .phone-link {
+            color: #e31837;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .phone-link:hover {
+            color: #c91530;
+            text-decoration: underline;
+        }
+
+        .directions-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #5b3a82 0%, #432e5f 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .directions-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 58, 130, 0.4);
+        }
+
+        .directions-btn::after {
+            content: '→';
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px 32px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .footer p {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .header {
+                padding: 32px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 32px 20px;
+            }
+
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .location-card {
+                padding: 24px;
+            }
+
+            .location-name {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-button">Back to Home</a>
+
+        <div class="glass-card">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">European Wax Center</div>
+                    <h1>Our 757 Locations</h1>
+                    <p>Seven Convenient Centers Serving Hampton Roads</p>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="locations-grid">
+                    <!-- Newport News -->
+                    <div class="location-card">
+                        <h3 class="location-name">Newport News</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    12080 Jefferson Ave, Suite 220<br>
+                                    Newport News, VA 23606
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7579135580" class="phone-link">(757) 913-5580</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=12080+Jefferson+Ave+Suite+220+Newport+News+VA+23606" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+
+                    <!-- Chesapeake -->
+                    <div class="location-card">
+                        <h3 class="location-name">Chesapeake</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    1412 Greenbrier Pkwy<br>
+                                    Chesapeake, VA 23320
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7575127929" class="phone-link">(757) 512-7929</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=1412+Greenbrier+Pkwy+Chesapeake+VA+23320" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+
+                    <!-- Virginia Beach Town Center -->
+                    <div class="location-card">
+                        <h3 class="location-name">Virginia Beach Town Center</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    4485 Virginia Beach Blvd<br>
+                                    Virginia Beach, VA 23462
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7575387002" class="phone-link">(757) 538-7002</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=4485+Virginia+Beach+Blvd+Virginia+Beach+VA+23462" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+
+                    <!-- Virginia Beach Hilltop -->
+                    <div class="location-card">
+                        <h3 class="location-name">Virginia Beach Hilltop</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    1725 Laskin Rd<br>
+                                    Virginia Beach, VA 23454
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7579383555" class="phone-link">(757) 938-3555</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=1725+Laskin+Rd+Virginia+Beach+VA+23454" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+
+                    <!-- Williamsburg -->
+                    <div class="location-card">
+                        <h3 class="location-name">Williamsburg</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    5227 Monticello Ave, Suite E<br>
+                                    Williamsburg, VA 23188
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7575288111" class="phone-link">(757) 528-8111</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=5227+Monticello+Ave+Suite+E+Williamsburg+VA+23188" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+
+                    <!-- Suffolk -->
+                    <div class="location-card">
+                        <h3 class="location-name">Suffolk</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    2092 Gateway Dr, Suite 500<br>
+                                    Suffolk, VA 23435
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7578610087" class="phone-link">(757) 861-0087</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=2092+Gateway+Dr+Suite+500+Suffolk+VA+23435" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+
+                    <!-- Norfolk -->
+                    <div class="location-card">
+                        <h3 class="location-name">Norfolk</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div class="info-text">
+                                    <strong>Address</strong>
+                                    742A West 21st St<br>
+                                    Norfolk, VA 23517
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <strong>Phone</strong>
+                                    <a href="tel:7579322991" class="phone-link">(757) 932-2991</a>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=742A+West+21st+St+Norfolk+VA+23517" target="_blank" class="directions-btn">Get Directions</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Visit any of our convenient locations throughout Hampton Roads. Walk-ins welcome when time allows, appointments recommended.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
