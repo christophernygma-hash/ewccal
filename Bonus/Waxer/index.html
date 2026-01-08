@@ -2008,8 +2008,8 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Password Protection
-        const CORRECT_PASSWORD_HASH = '6f8e7c3a5b2d1f4e9a8c7b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5';
+        // Password Protection - SHA-256 hash of "Waxcenter757"
+        const CORRECT_PASSWORD_HASH = 'b17271032441366c7773cb8e2c2ac3c0dda5acff0e07e829c6dd26dc764eba33';
 
         // Check if already authenticated
         window.addEventListener('DOMContentLoaded', function() {
