@@ -214,6 +214,54 @@
             transform: translateX(4px);
         }
 
+        .resource-disclaimer {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #e31837;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .resource-features {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .feature-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #5b3a82;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-right: 4px;
+            white-space: nowrap;
+        }
+
+        .feature-label::after {
+            content: ':';
+        }
+
+        .feature-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #555;
+            background: rgba(91, 58, 130, 0.08);
+            border: 1px solid rgba(91, 58, 130, 0.15);
+            border-radius: 20px;
+            padding: 2px 10px;
+            white-space: nowrap;
+        }
+
         .footer {
             text-align: center;
             padding: 24px 32px;
@@ -658,6 +706,37 @@
                         <h3 class="resource-title">Bonus Calculator</h3>
                         <p class="resource-description">Calculate your bi-weekly bonus based on service credits, retail sales, and SPT performance. Get real-time insights and maximize your earnings potential.</p>
                         <span class="resource-link">Open Calculator</span>
+                    </a>
+
+                    <a href="https://app.jotform.com/242194505209151" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <span class="resource-icon">🗂️</span>
+                        <h3 class="resource-title">Associate Support App</h3>
+                        <p class="resource-disclaimer">⚡ This is the live app</p>
+                        <p class="resource-description">Access the centralized associate hub designed to keep everything you need in one place. Submit forms, access important links, receive franchise updates, track contest results, and stay connected to operational tools used across the franchise. Built to simplify daily workflows and give associates quick access to the resources they use most.</p>
+                        <div class="resource-features">
+                            <div class="feature-group">
+                                <span class="feature-label">Associate Forms</span>
+                                <span class="feature-tag">Time Off Requests</span>
+                                <span class="feature-tag">Availability Updates</span>
+                                <span class="feature-tag">Incident Reports</span>
+                                <span class="feature-tag">Coaching Docs</span>
+                                <span class="feature-tag">Performance Tracking</span>
+                            </div>
+                            <div class="feature-group">
+                                <span class="feature-label">Operational Resources</span>
+                                <span class="feature-tag">Training Materials</span>
+                                <span class="feature-tag">Service Standards</span>
+                                <span class="feature-tag">Product Knowledge</span>
+                                <span class="feature-tag">Scheduling Links</span>
+                            </div>
+                            <div class="feature-group">
+                                <span class="feature-label">Quick Links & Communication</span>
+                                <span class="feature-tag">Key Platforms</span>
+                                <span class="feature-tag">Leadership Updates</span>
+                                <span class="feature-tag">Mobile Friendly</span>
+                            </div>
+                        </div>
+                        <span class="resource-link">Open App</span>
                     </a>
                 </div>
             </div>
