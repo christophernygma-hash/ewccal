@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EWC Resources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -403,8 +403,9 @@
             border-radius: 24px;
             max-width: 700px;
             width: 100%;
-            max-height: 90vh;
-            overflow: hidden;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             transform: scale(0.95);
             transition: transform 0.3s;
@@ -418,6 +419,7 @@
             background: linear-gradient(135deg, #5b3a82 0%, #432e5f 100%);
             padding: 24px 32px;
             position: relative;
+            flex-shrink: 0;
         }
 
         .modal-header h2 {
@@ -454,7 +456,7 @@
         .modal-body {
             padding: 32px;
             overflow-y: auto;
-            max-height: calc(90vh - 140px);
+            flex: 1;
         }
 
         .disclaimer-text {
@@ -472,6 +474,11 @@
             font-weight: 700;
         }
 
+        .disclaimer-text .extra-bold {
+            font-weight: 900;
+            color: #432e5f;
+        }
+
         .modal-footer {
             padding: 24px 32px;
             background: #f8f8f8;
@@ -479,6 +486,7 @@
             display: flex;
             justify-content: flex-end;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .btn-secondary {
@@ -595,11 +603,11 @@
             </div>
             <div class="modal-body">
                 <div class="disclaimer-text">
-                    <p>The tools, dashboards, workflows, and supporting resources contained in this demonstration were independently developed by <strong>Christopher Carter</strong> for operational use within an European Wax Center Lafon franchise environment. These materials are being shared solely for the purpose of demonstrating operational concepts, automation capabilities, and management systems that I have designed and implemented.</p>
+                    <p>The tools, dashboards, workflows, and supporting resources contained in this demonstration were independently developed by <strong>Christopher Carter</strong> for operational use within an European Wax Center <span class="extra-bold">Lafon franchise</span> environment. These materials are being shared solely for the purpose of demonstrating operational concepts, automation capabilities, and management systems that I have designed and implemented.</p>
                     
                     <p>All materials presented remain the intellectual property of <strong>Christopher Carter</strong> unless otherwise agreed in writing. Access to these resources is provided for demonstration and evaluation purposes only and does not grant permission to copy, distribute, implement, or reproduce any portion of the systems, formulas, structures, or processes without explicit authorization.</p>
                     
-                    <p>Additionally, any financial models, performance metrics, bonus calculations, commission structures, or payout projections included within these tools reflect the specific operational framework used within the Lafon franchise environment at the time they were created. These examples should be considered illustrative only and may not reflect the policies, compensation models, or operational structures of other European Wax Center franchise groups.</p>
+                    <p>Additionally, any financial models, performance metrics, bonus calculations, commission structures, or payout projections included within these tools reflect the specific operational framework used within the <span class="extra-bold">Lafon franchise</span> environment at the time they were created. These examples should be considered illustrative only and may not reflect the policies, compensation models, or operational structures of other European Wax Center franchise groups.</p>
                     
                     <p>No guarantee is made regarding the accuracy, applicability, or financial outcomes if these tools were adapted to a different franchise organization, market, or operational model.</p>
                     
@@ -649,9 +657,6 @@
     </div>
 
     <script>
-        // SHA-256 hash of "EWCLafon"
-        const CORRECT_PASSWORD_HASH = 'a8c5f3e2d1b4e6f7a9c8b7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0';
-
         // Check if already authenticated
         window.addEventListener('DOMContentLoaded', function() {
             if (sessionStorage.getItem('ewc_auth') === 'true') {
@@ -666,20 +671,10 @@
             });
         });
 
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
         async function checkPassword() {
             const input = document.getElementById('passwordInput');
             const error = document.getElementById('passwordError');
             const password = input.value;
-
-            const hash = await sha256(password);
 
             if (password === 'EWCLafon') {
                 showDisclaimer();
