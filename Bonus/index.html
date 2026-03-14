@@ -280,6 +280,30 @@
             font-weight: 700;
         }
 
+        .change-pw-link {
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .change-pw-link:hover {
+            color: #5b3a82;
+        }
+
+        .pw-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 6px;
+        }
+
         .help-toggle {
             cursor: pointer;
             display: inline-flex;
@@ -683,6 +707,38 @@
         </div>
     </div>
 
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePwModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="modal-close" onclick="closeChangePw()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 28px 32px;">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label class="pw-label">Current Password</label>
+                        <input type="password" class="password-input" id="cpCurrent" placeholder="Enter current password" style="margin-bottom: 0;" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="pw-label">New Password</label>
+                        <input type="password" class="password-input" id="cpNew" placeholder="Enter new password" style="margin-bottom: 0;" autocomplete="new-password">
+                    </div>
+                    <div>
+                        <label class="pw-label">Confirm New Password</label>
+                        <input type="password" class="password-input" id="cpConfirm" placeholder="Confirm new password" style="margin-bottom: 0;" autocomplete="new-password">
+                    </div>
+                    <p class="password-error" id="cpError" style="margin-top: 0;"></p>
+                    <p id="cpSuccess" style="color: #2e7d32; font-size: 0.85rem; font-weight: 600; opacity: 0; transition: opacity 0.3s;">Password updated successfully!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeChangePw()">Cancel</button>
+                <button class="btn-primary" onclick="saveNewPassword()">Update Password</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container content-hidden" id="mainContent">
         <div class="glass-card">
             <div class="header">
@@ -746,6 +802,9 @@
                     <strong class="help-toggle" onclick="toggleHelp()">Need Help?</strong>
                     <span class="help-content" id="helpContent"><br>Contact Chris Carter for questions about tool usage.</span>
                 </p>
+                <p style="margin-top: 12px;">
+                    <span class="change-pw-link" onclick="openChangePw()">Change Password</span>
+                </p>
             </div>
         </div>
     </div>
@@ -765,12 +824,18 @@
             });
         });
 
+        const DEFAULT_PASSWORD = 'EWCLafon';
+
+        function getPassword() {
+            return localStorage.getItem('ewc_password') || DEFAULT_PASSWORD;
+        }
+
         async function checkPassword() {
             const input = document.getElementById('passwordInput');
             const error = document.getElementById('passwordError');
             const password = input.value;
 
-            if (password === 'EWCLafon') {
+            if (password === getPassword()) {
                 showDisclaimer();
             } else {
                 error.classList.add('show');
@@ -781,6 +846,51 @@
                     error.classList.remove('show');
                 }, 3000);
             }
+        }
+
+        function openChangePw() {
+            document.getElementById('cpCurrent').value = '';
+            document.getElementById('cpNew').value = '';
+            document.getElementById('cpConfirm').value = '';
+            document.getElementById('cpError').classList.remove('show');
+            document.getElementById('cpSuccess').style.opacity = '0';
+            document.getElementById('changePwModal').classList.add('show');
+            setTimeout(() => document.getElementById('cpCurrent').focus(), 100);
+        }
+
+        function closeChangePw() {
+            document.getElementById('changePwModal').classList.remove('show');
+        }
+
+        function saveNewPassword() {
+            const current = document.getElementById('cpCurrent').value;
+            const newPw = document.getElementById('cpNew').value;
+            const confirm = document.getElementById('cpConfirm').value;
+            const error = document.getElementById('cpError');
+            const success = document.getElementById('cpSuccess');
+
+            error.classList.remove('show');
+            error.textContent = '';
+
+            if (current !== getPassword()) {
+                error.textContent = 'Current password is incorrect.';
+                error.classList.add('show');
+                return;
+            }
+            if (newPw.length < 4) {
+                error.textContent = 'New password must be at least 4 characters.';
+                error.classList.add('show');
+                return;
+            }
+            if (newPw !== confirm) {
+                error.textContent = 'New passwords do not match.';
+                error.classList.add('show');
+                return;
+            }
+
+            localStorage.setItem('ewc_password', newPw);
+            success.style.opacity = '1';
+            setTimeout(() => closeChangePw(), 1500);
         }
 
         function showDisclaimer() {
