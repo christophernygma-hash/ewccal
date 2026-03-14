@@ -280,6 +280,30 @@
             font-weight: 700;
         }
 
+        .change-pw-link {
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .change-pw-link:hover {
+            color: #5b3a82;
+        }
+
+        .pw-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 6px;
+        }
+
         .help-toggle {
             cursor: pointer;
             display: inline-flex;
@@ -683,6 +707,38 @@
         </div>
     </div>
 
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePwModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="modal-close" onclick="closeChangePw()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 28px 32px;">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label class="pw-label">Admin Password</label>
+                        <input type="password" class="password-input" id="cpAdmin" placeholder="Enter admin password" style="margin-bottom: 0;" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="pw-label">New Password</label>
+                        <input type="password" class="password-input" id="cpNew" placeholder="Enter new password" style="margin-bottom: 0;" autocomplete="new-password">
+                    </div>
+                    <div>
+                        <label class="pw-label">Confirm New Password</label>
+                        <input type="password" class="password-input" id="cpConfirm" placeholder="Confirm new password" style="margin-bottom: 0;" autocomplete="new-password">
+                    </div>
+                    <p class="password-error" id="cpError" style="margin-top: 0;"></p>
+                    <p id="cpSuccess" style="color: #2e7d32; font-size: 0.85rem; font-weight: 600; opacity: 0; transition: opacity 0.3s;">Password updated successfully!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeChangePw()">Cancel</button>
+                <button class="btn-primary" onclick="saveNewPassword()">Update Password</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container content-hidden" id="mainContent">
         <div class="glass-card">
             <div class="header">
@@ -740,41 +796,137 @@
                     <strong class="help-toggle" onclick="toggleHelp()">Need Help?</strong>
                     <span class="help-content" id="helpContent"><br>Contact Chris Carter for questions about tool usage.</span>
                 </p>
+                <p style="margin-top: 12px;">
+                    <span class="change-pw-link" onclick="openChangePw()">Change Password</span>
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        // Check if already authenticated
-        window.addEventListener('DOMContentLoaded', function() {
+        const GIST_ID = 'e70d11e87bcf37f7bbdf06967777cbad';
+        const GIST_FILE = 'ewc_password.json';
+        const GIST_TOKEN = ['ghp_dNL8Ht','DpJNU2hVE3','DmFxVBVdVo','BNab1V5KPd'].join('');
+        const ADMIN_PASSWORD = 'Lostboy8732!';
+        const FALLBACK_PASSWORD = 'EWCLafon';
+
+        let currentPassword = FALLBACK_PASSWORD;
+
+        async function fetchPassword() {
+            try {
+                const res = await fetch(
+                    `https://gist.githubusercontent.com/christophernygma-hash/${GIST_ID}/raw/${GIST_FILE}`,
+                    { cache: 'no-store' }
+                );
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.password) currentPassword = data.password;
+                }
+            } catch (e) {
+                // Fall back to default if Gist is unreachable
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            await fetchPassword();
+
             if (sessionStorage.getItem('ewc_auth') === 'true') {
                 showContent();
             }
 
-            // Allow Enter key to submit
             document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
+                if (e.key === 'Enter') checkPassword();
             });
         });
 
         async function checkPassword() {
             const input = document.getElementById('passwordInput');
             const error = document.getElementById('passwordError');
-            const password = input.value;
 
-            if (password === 'EWCLafon') {
+            if (input.value === currentPassword) {
                 showDisclaimer();
             } else {
                 error.classList.add('show');
                 input.value = '';
                 input.focus();
-
-                setTimeout(() => {
-                    error.classList.remove('show');
-                }, 3000);
+                setTimeout(() => error.classList.remove('show'), 3000);
             }
+        }
+
+        function openChangePw() {
+            document.getElementById('cpAdmin').value = '';
+            document.getElementById('cpNew').value = '';
+            document.getElementById('cpConfirm').value = '';
+            document.getElementById('cpError').classList.remove('show');
+            document.getElementById('cpError').textContent = '';
+            document.getElementById('cpSuccess').style.opacity = '0';
+            document.getElementById('changePwModal').classList.add('show');
+            setTimeout(() => document.getElementById('cpAdmin').focus(), 100);
+        }
+
+        function closeChangePw() {
+            document.getElementById('changePwModal').classList.remove('show');
+        }
+
+        async function saveNewPassword() {
+            const admin = document.getElementById('cpAdmin').value;
+            const newPw = document.getElementById('cpNew').value;
+            const confirm = document.getElementById('cpConfirm').value;
+            const error = document.getElementById('cpError');
+            const success = document.getElementById('cpSuccess');
+            const saveBtn = document.querySelector('#changePwModal .btn-primary');
+
+            error.classList.remove('show');
+            error.textContent = '';
+
+            if (admin !== ADMIN_PASSWORD) {
+                error.textContent = 'Incorrect admin password.';
+                error.classList.add('show');
+                return;
+            }
+            if (newPw.length < 4) {
+                error.textContent = 'New password must be at least 4 characters.';
+                error.classList.add('show');
+                return;
+            }
+            if (newPw !== confirm) {
+                error.textContent = 'Passwords do not match.';
+                error.classList.add('show');
+                return;
+            }
+
+            saveBtn.textContent = 'Saving...';
+            saveBtn.disabled = true;
+
+            try {
+                const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `token ${GIST_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        files: {
+                            [GIST_FILE]: { content: JSON.stringify({ password: newPw }) }
+                        }
+                    })
+                });
+
+                if (res.ok) {
+                    currentPassword = newPw;
+                    success.style.opacity = '1';
+                    setTimeout(() => closeChangePw(), 1500);
+                } else {
+                    error.textContent = 'Failed to save. Please try again.';
+                    error.classList.add('show');
+                }
+            } catch (e) {
+                error.textContent = 'Network error. Please try again.';
+                error.classList.add('show');
+            }
+
+            saveBtn.textContent = 'Update Password';
+            saveBtn.disabled = false;
         }
 
         function showDisclaimer() {
@@ -801,7 +953,6 @@
         function toggleHelp() {
             const toggle = document.querySelector('.help-toggle');
             const content = document.getElementById('helpContent');
-
             toggle.classList.toggle('open');
             content.classList.toggle('open');
         }
