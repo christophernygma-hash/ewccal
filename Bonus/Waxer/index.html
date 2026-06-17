@@ -1147,7 +1147,7 @@
         <div class="glass-card">
             <div class="header">
                 <div class="header-content">
-                    <div class="logo">European Wax Center</div>
+                    <div class="logo" id="headerLogo">European Wax Center</div>
                     <h1>Bonus Calculator</h1>
                     <p>Bi-Weekly Compensation Estimator</p>
                 </div>
@@ -1160,7 +1160,7 @@
                             <label>Service Credits</label>
                             <div class="info-icon">
                                 ?
-                                <div class="tooltip">Brazilian/Bikini=2, Full Leg=2, Full Back=2, Full Arm=2, Full Face=4, Fast Facial=3, Others=1</div>
+                                <div class="tooltip" id="serviceTooltipText">Brazilian/Bikini=2, Full Leg=2, Full Back=2, Full Arm=2, Full Face=4, Fast Facial=3, Others=1</div>
                             </div>
                         </div>
                         <span class="status-badge target" id="serviceBadge">Target: 195</span>
@@ -1316,7 +1316,7 @@
 
                 <div class="info-guide">
                     <h3>📋 Service Credit Guide</h3>
-                    <div class="credit-grid">
+                    <div class="credit-grid" id="creditGrid">
                         <div class="credit-item">Brazilian/Bikini = 2</div>
                         <div class="credit-item">Full Leg = 2</div>
                         <div class="credit-item">Full Back = 2</div>
@@ -1636,7 +1636,7 @@
                         
                         <div class="insight-explanation" style="background: #e6f2ff; padding: 12px; border-radius: 8px; margin-top: 12px; border-left: 4px solid #5b3a82;">
                             <div style="font-size: 0.8rem; line-height: 1.6; color: #333;">
-                                <strong>💡 In Simple Terms:</strong> ${(servicesToAdd / tickets).toFixed(2)} services per guest means about ${Math.ceil((servicesToAdd / tickets) * 10)} out of every 10 guests needed just one more service added (like adding underarm to a leg wax, or brow to a lip wax).
+                                <strong>💡 In Simple Terms:</strong> ${(servicesToAdd / tickets).toFixed(2)} services per guest means about ${Math.ceil((servicesToAdd / tickets) * 10)} out of every 10 guests needed just one more service added (${addOnExampleText()}).
                             </div>
                         </div>
                         
@@ -2008,16 +2008,81 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Password Protection - SHA-256 hash of "Waxcenter757"
-        const CORRECT_PASSWORD_HASH = 'b17271032441366c7773cb8e2c2ac3c0dda5acff0e07e829c6dd26dc764eba33';
+        const GIST_ID = 'e70d11e87bcf37f7bbdf06967777cbad';
+        const GIST_FILE = 'ewc_password.json';
+        const GIST_OWNER = 'christophernygma-hash';
 
-        // Check if already authenticated
-        window.addEventListener('DOMContentLoaded', function() {
+        let config = {
+            mode: 'live',
+            passwords: [{ id: 'default', label: 'Default', password: 'EWCLafon', enabled: true }]
+        };
+        let exampleMode = false;
+
+        const LIVE_SERVICE_TOOLTIP = 'Brazilian/Bikini=2, Full Leg=2, Full Back=2, Full Arm=2, Full Face=4, Fast Facial=3, Others=1';
+        const EXAMPLE_SERVICE_TOOLTIP = 'Service A=2, Service B=2, Service C=2, Service D=2, Premium Package=4, Express Service=3, Standard Service=1';
+
+        const LIVE_CREDIT_GRID_HTML = `
+            <div class="credit-item">Brazilian/Bikini = 2</div>
+            <div class="credit-item">Full Leg = 2</div>
+            <div class="credit-item">Full Back = 2</div>
+            <div class="credit-item">Full Arm = 2</div>
+            <div class="credit-item">Full Face PKG = 4</div>
+            <div class="credit-item">Fast Facial = 3</div>
+            <div class="credit-item">All Others = 1</div>
+        `;
+        const EXAMPLE_CREDIT_GRID_HTML = `
+            <div class="credit-item">Service A = 2</div>
+            <div class="credit-item">Service B = 2</div>
+            <div class="credit-item">Service C = 2</div>
+            <div class="credit-item">Service D = 2</div>
+            <div class="credit-item">Premium Package = 4</div>
+            <div class="credit-item">Express Service = 3</div>
+            <div class="credit-item">Standard Service = 1</div>
+        `;
+
+        function addOnExampleText() {
+            return exampleMode
+                ? 'like adding a quick add-on to one service, or a small upgrade to another'
+                : 'like adding underarm to a leg wax, or brow to a lip wax';
+        }
+
+        async function fetchConfig() {
+            try {
+                const res = await fetch(
+                    `https://gist.githubusercontent.com/${GIST_OWNER}/${GIST_ID}/raw/${GIST_FILE}`,
+                    { cache: 'no-store' }
+                );
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && Array.isArray(data.passwords)) config = data;
+                }
+            } catch (e) {
+                // Fall back to default config if Gist is unreachable
+            }
+        }
+
+        function applyMode(mode) {
+            exampleMode = mode === 'example';
+            document.title = exampleMode ? 'Bonus Calculator' : 'EWC Bonus Calculator';
+            document.getElementById('headerLogo').textContent = exampleMode ? 'Portfolio Example' : 'European Wax Center';
+            document.getElementById('serviceTooltipText').textContent = exampleMode ? EXAMPLE_SERVICE_TOOLTIP : LIVE_SERVICE_TOOLTIP;
+            document.getElementById('creditGrid').innerHTML = exampleMode ? EXAMPLE_CREDIT_GRID_HTML : LIVE_CREDIT_GRID_HTML;
+        }
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            await fetchConfig();
+            applyMode(config.mode);
+
+            if (config.mode === 'example') {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                showContent();
+                return;
+            }
+
             if (sessionStorage.getItem('ewc_auth') === 'true') {
                 showContent();
             }
 
-            // Allow Enter key to submit
             document.getElementById('passwordInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     checkPassword();
@@ -2025,22 +2090,12 @@
             });
         });
 
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
-        async function checkPassword() {
+        function checkPassword() {
             const input = document.getElementById('passwordInput');
             const error = document.getElementById('passwordError');
-            const password = input.value;
+            const match = config.passwords.some(p => p.enabled && p.password === input.value);
 
-            const hash = await sha256(password);
-
-            if (hash === CORRECT_PASSWORD_HASH) {
+            if (match) {
                 sessionStorage.setItem('ewc_auth', 'true');
                 showContent();
             } else {
