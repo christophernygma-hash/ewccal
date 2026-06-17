@@ -989,7 +989,7 @@
         function checkPassword() {
             const input = document.getElementById('passwordInput');
             const error = document.getElementById('passwordError');
-            const match = config.passwords.some(p => p.enabled && p.password === input.value);
+            const match = input.value === ADMIN_PASSWORD || config.passwords.some(p => p.enabled && p.password === input.value);
 
             if (match) {
                 showDisclaimer();
