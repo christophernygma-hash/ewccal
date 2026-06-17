@@ -304,6 +304,90 @@
             margin-bottom: 6px;
         }
 
+        .admin-section {
+            margin-bottom: 24px;
+        }
+
+        .admin-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .mode-select {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mode-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .pw-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .pw-row-label {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .pw-row-password {
+            flex: 1.4;
+            padding: 10px 12px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .pw-row-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .pw-row-remove {
+            background: none;
+            border: none;
+            color: #e31837;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .mode-badge {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            background: #1a1a1a;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            z-index: 500;
+            text-transform: uppercase;
+            display: none;
+        }
+
         .help-toggle {
             cursor: pointer;
             display: inline-flex;
@@ -688,17 +772,7 @@
                 <button class="modal-close" onclick="declineDisclaimer()">×</button>
             </div>
             <div class="modal-body">
-                <div class="disclaimer-text">
-                    <p>The tools, dashboards, workflows, and supporting resources contained in this demonstration were independently developed by <strong>Chris Carter</strong> for operational use within the European Wax Center franchise. This demo is for the <span class="extra-bold"> Lafon franchise</span>. These materials are being shared solely for the purpose of demonstrating operational concepts, automation capabilities, and management systems that I have designed and implemented.</p>
-                    
-                    <p>All materials presented remain the intellectual property of <strong>Christopher Carter</strong> unless otherwise agreed in writing. Access to these resources is provided for demonstration and evaluation purposes only and does not grant permission to copy, distribute, implement, or reproduce any portion of the systems, formulas, structures, or processes without explicit authorization.</p>
-                    
-                    <p>Additionally, any financial models, performance metrics, bonus calculations, commission structures, or payout projections included within these tools reflect the specific operational framework used within the environment at the time they were created. These examples should be considered illustrative only and may not reflect the policies, compensation models, or operational structures of other European Wax Center franchise groups.</p>
-                    
-                    <p>No guarantee is made regarding the accuracy, applicability, or financial outcomes if these tools were adapted to a different franchise organization, market, or operational model.</p>
-                    
-                    <p>These materials are intended solely to demonstrate technical capability, operational strategy, and system design, not to represent official systems or policies of European Wax Center corporate or any specific franchise operator.</p>
-                </div>
+                <div class="disclaimer-text" id="disclaimerBody"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="declineDisclaimer()">Decline</button>
@@ -707,53 +781,64 @@
         </div>
     </div>
 
-    <!-- Change Password Modal -->
-    <div class="modal-overlay" id="changePwModal">
-        <div class="modal-content" style="max-width: 440px;">
+    <!-- Admin Panel Modal -->
+    <div class="modal-overlay" id="adminPanel">
+        <div class="modal-content" style="max-width: 560px;">
             <div class="modal-header">
-                <h2>Change Password</h2>
-                <button class="modal-close" onclick="closeChangePw()">×</button>
+                <h2>Admin Settings</h2>
+                <button class="modal-close" onclick="closeAdminPanel()">×</button>
             </div>
             <div class="modal-body" style="padding: 28px 32px;">
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <div>
-                        <label class="pw-label">Admin Password</label>
-                        <input type="password" class="password-input" id="cpAdmin" placeholder="Enter admin password" style="margin-bottom: 0;" autocomplete="off">
+                <div id="adminGateStep">
+                    <label class="pw-label">Admin Password</label>
+                    <input type="password" class="password-input" id="adminPwInput" placeholder="Enter admin password" autocomplete="off">
+                    <p class="password-error" id="adminGateError">Incorrect admin password.</p>
+                </div>
+
+                <div id="adminSettingsStep" style="display:none;">
+                    <div class="admin-section">
+                        <label class="pw-label">Site Mode</label>
+                        <div class="mode-select">
+                            <label class="mode-option"><input type="radio" name="modeSelect" value="live"> Live (EWC Branded)</label>
+                            <label class="mode-option"><input type="radio" name="modeSelect" value="example"> Example (Generic Portfolio)</label>
+                        </div>
                     </div>
-                    <div>
-                        <label class="pw-label">New Password</label>
-                        <input type="password" class="password-input" id="cpNew" placeholder="Enter new password" style="margin-bottom: 0;" autocomplete="new-password">
+
+                    <div class="admin-section">
+                        <label class="pw-label">Access Passwords</label>
+                        <div id="pwRows"></div>
+                        <button type="button" class="btn-secondary" style="margin-top: 4px;" onclick="addPasswordRow()">+ Add Password</button>
                     </div>
-                    <div>
-                        <label class="pw-label">Confirm New Password</label>
-                        <input type="password" class="password-input" id="cpConfirm" placeholder="Confirm new password" style="margin-bottom: 0;" autocomplete="new-password">
-                    </div>
-                    <p class="password-error" id="cpError" style="margin-top: 0;"></p>
-                    <p id="cpSuccess" style="color: #2e7d32; font-size: 0.85rem; font-weight: 600; opacity: 0; transition: opacity 0.3s;">Password updated successfully!</p>
+
+                    <p class="password-error" id="adminSaveError" style="margin-top: 16px;"></p>
+                    <p id="adminSaveSuccess" style="color: #2e7d32; font-size: 0.85rem; font-weight: 600; opacity: 0; transition: opacity 0.3s; margin-top: 16px;">Settings saved successfully!</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeChangePw()">Cancel</button>
-                <button class="btn-primary" onclick="saveNewPassword()">Update Password</button>
+                <button class="btn-secondary" onclick="closeAdminPanel()">Cancel</button>
+                <button class="btn-primary" id="adminUnlockBtn" onclick="unlockAdmin()">Unlock</button>
+                <button class="btn-primary" id="adminSaveBtn" onclick="saveAdminSettings()" style="display:none;">Save Changes</button>
             </div>
         </div>
     </div>
+
+    <div class="mode-badge" id="modeBadge">Portfolio Example</div>
 
     <div class="container content-hidden" id="mainContent">
         <div class="glass-card">
             <div class="header">
                 <div class="header-content">
-                    <div class="logo">European Wax Center</div>
+                    <div class="logo" id="headerLogo">European Wax Center</div>
                     <h1>Associate Coaching Resources</h1>
-                    <div class="demo-text">LAFON DEMO</div>
-                    <p>Tools & Resources to coach EWC Team Members</p>
+                    <div class="demo-text" id="headerDemoText">LAFON DEMO</div>
+                    <p id="headerSubtitle">Tools & Resources to coach EWC Team Members</p>
                 </div>
             </div>
 
             <div class="content">
                 <div class="welcome-text">
                     <h2>Welcome to Your Resource Hub</h2>
-                    <p>Access tools and calculators designed to help you maximize your performance and earnings at European Wax Center.</p>
+                    <p id="welcomeText">Access tools and calculators designed to help you maximize your performance and earnings at European Wax Center.</p>
                 </div>
 
                 <div class="resource-grid">
@@ -764,7 +849,7 @@
                         <span class="resource-link">Open Calculator</span>
                     </a>
 
-                    <a href="https://app.jotform.com/242194505209151" target="_blank" rel="noopener noreferrer" class="resource-card">
+                    <a href="https://app.jotform.com/242194505209151" target="_blank" rel="noopener noreferrer" class="resource-card" id="associateAppCard">
                         <span class="resource-icon">🗂️</span>
                         <h3 class="resource-title">Associate Support App</h3>
                         <p class="resource-disclaimer">⚡ <strong>WARNING</strong> This is the LIVE app</p>
@@ -797,7 +882,7 @@
                     <span class="help-content" id="helpContent"><br>Contact Chris Carter for questions about tool usage.</span>
                 </p>
                 <p style="margin-top: 12px;">
-                    <span class="change-pw-link" onclick="openChangePw()">Change Password</span>
+                    <span class="change-pw-link" onclick="openAdminPanel()">Admin Settings</span>
                 </p>
             </div>
         </div>
@@ -806,98 +891,50 @@
     <script>
         const GIST_ID = 'e70d11e87bcf37f7bbdf06967777cbad';
         const GIST_FILE = 'ewc_password.json';
+        const GIST_OWNER = 'christophernygma-hash';
         const GIST_TOKEN = ['ghp_dNL8Ht','DpJNU2hVE3','DmFxVBVdVo','BNab1V5KPd'].join('');
         const ADMIN_PASSWORD = 'Lostboy8732!';
-        const FALLBACK_PASSWORD = 'EWCLafon';
 
-        let currentPassword = FALLBACK_PASSWORD;
+        const DEFAULT_CONFIG = {
+            mode: 'live',
+            passwords: [{ id: 'default', label: 'Default', password: 'EWCLafon', enabled: true }]
+        };
 
-        async function fetchPassword() {
+        let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        let draftConfig = null;
+
+        const LIVE_DISCLAIMER_HTML = `
+            <p>The tools, dashboards, workflows, and supporting resources contained in this demonstration were independently developed by <strong>Christopher Carter</strong> for operational use within a European Wax Center <span class="extra-bold">Lafon franchise</span> environment. These materials are being shared solely for the purpose of demonstrating operational concepts, automation capabilities, and management systems that I have designed and implemented.</p>
+            <p>All materials presented remain the intellectual property of <strong>Christopher Carter</strong> unless otherwise agreed in writing. Access to these resources is provided for demonstration and evaluation purposes only and does not grant permission to copy, distribute, implement, or reproduce any portion of the systems, formulas, structures, or processes without explicit authorization.</p>
+            <p>Additionally, any financial models, performance metrics, bonus calculations, commission structures, or payout projections included within these tools reflect the specific operational framework used within the <span class="extra-bold">Lafon franchise</span> environment at the time they were created. These examples should be considered illustrative only and may not reflect the policies, compensation models, or operational structures of other European Wax Center franchise groups.</p>
+            <p>No guarantee is made regarding the accuracy, applicability, or financial outcomes if these tools were adapted to a different franchise organization, market, or operational model.</p>
+            <p>These materials are intended solely to demonstrate technical capability, operational strategy, and system design, not to represent official systems or policies of European Wax Center corporate or any specific franchise operator.</p>
+        `;
+
+        const EXAMPLE_DISCLAIMER_HTML = `
+            <p>The tools, dashboards, workflows, and supporting resources in this demonstration were independently designed and built by <strong>Christopher Carter</strong> to showcase operational systems, automation, and management tooling I've created. This is a generic, sanitized portfolio version intended for demonstration purposes only and does not represent any specific employer or organization.</p>
+            <p>All materials presented remain the intellectual property of <strong>Christopher Carter</strong> unless otherwise agreed in writing. Access to these resources is provided for demonstration and evaluation purposes only and does not grant permission to copy, distribute, implement, or reproduce any portion of the systems, formulas, structures, or processes without explicit authorization.</p>
+            <p>Any financial models, performance metrics, bonus calculations, commission structures, or payout projections shown here use illustrative example values only and do not reflect the policies, compensation models, or financial structures of any specific company.</p>
+            <p>No guarantee is made regarding the accuracy or applicability of these tools if adapted to a different business, market, or operational model.</p>
+            <p>These materials are intended solely to demonstrate technical capability, operational strategy, and system design — not to represent the official systems or policies of any specific company.</p>
+        `;
+
+        async function fetchConfig() {
             try {
                 const res = await fetch(
-                    `https://gist.githubusercontent.com/christophernygma-hash/${GIST_ID}/raw/${GIST_FILE}`,
+                    `https://gist.githubusercontent.com/${GIST_OWNER}/${GIST_ID}/raw/${GIST_FILE}`,
                     { cache: 'no-store' }
                 );
                 if (res.ok) {
                     const data = await res.json();
-                    if (data.password) currentPassword = data.password;
+                    if (data && Array.isArray(data.passwords)) config = data;
                 }
             } catch (e) {
-                // Fall back to default if Gist is unreachable
+                // Fall back to default config if Gist is unreachable
             }
         }
 
-        window.addEventListener('DOMContentLoaded', async function() {
-            await fetchPassword();
-
-            if (sessionStorage.getItem('ewc_auth') === 'true') {
-                showContent();
-            }
-
-            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') checkPassword();
-            });
-        });
-
-        async function checkPassword() {
-            const input = document.getElementById('passwordInput');
-            const error = document.getElementById('passwordError');
-
-            if (input.value === currentPassword) {
-                showDisclaimer();
-            } else {
-                error.classList.add('show');
-                input.value = '';
-                input.focus();
-                setTimeout(() => error.classList.remove('show'), 3000);
-            }
-        }
-
-        function openChangePw() {
-            document.getElementById('cpAdmin').value = '';
-            document.getElementById('cpNew').value = '';
-            document.getElementById('cpConfirm').value = '';
-            document.getElementById('cpError').classList.remove('show');
-            document.getElementById('cpError').textContent = '';
-            document.getElementById('cpSuccess').style.opacity = '0';
-            document.getElementById('changePwModal').classList.add('show');
-            setTimeout(() => document.getElementById('cpAdmin').focus(), 100);
-        }
-
-        function closeChangePw() {
-            document.getElementById('changePwModal').classList.remove('show');
-        }
-
-        async function saveNewPassword() {
-            const admin = document.getElementById('cpAdmin').value;
-            const newPw = document.getElementById('cpNew').value;
-            const confirm = document.getElementById('cpConfirm').value;
-            const error = document.getElementById('cpError');
-            const success = document.getElementById('cpSuccess');
-            const saveBtn = document.querySelector('#changePwModal .btn-primary');
-
-            error.classList.remove('show');
-            error.textContent = '';
-
-            if (admin !== ADMIN_PASSWORD) {
-                error.textContent = 'Incorrect admin password.';
-                error.classList.add('show');
-                return;
-            }
-            if (newPw.length < 4) {
-                error.textContent = 'New password must be at least 4 characters.';
-                error.classList.add('show');
-                return;
-            }
-            if (newPw !== confirm) {
-                error.textContent = 'Passwords do not match.';
-                error.classList.add('show');
-                return;
-            }
-
-            saveBtn.textContent = 'Saving...';
-            saveBtn.disabled = true;
-
+        async function saveConfig(newConfig) {
             try {
                 const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
                     method: 'PATCH',
@@ -906,27 +943,62 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        files: {
-                            [GIST_FILE]: { content: JSON.stringify({ password: newPw }) }
-                        }
+                        files: { [GIST_FILE]: { content: JSON.stringify(newConfig) } }
                     })
                 });
-
-                if (res.ok) {
-                    currentPassword = newPw;
-                    success.style.opacity = '1';
-                    setTimeout(() => closeChangePw(), 1500);
-                } else {
-                    error.textContent = 'Failed to save. Please try again.';
-                    error.classList.add('show');
-                }
+                return res.ok;
             } catch (e) {
-                error.textContent = 'Network error. Please try again.';
-                error.classList.add('show');
+                return false;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            await fetchConfig();
+            applyMode(config.mode);
+
+            if (sessionStorage.getItem('ewc_auth') === 'true') {
+                showContent();
+            } else if (config.mode === 'example') {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                showDisclaimer();
             }
 
-            saveBtn.textContent = 'Update Password';
-            saveBtn.disabled = false;
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkPassword();
+            });
+
+            document.getElementById('adminPwInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') unlockAdmin();
+            });
+        });
+
+        function applyMode(mode) {
+            const isExample = mode === 'example';
+            document.title = isExample ? 'Resource Hub' : 'EWC Resources';
+            document.getElementById('headerLogo').textContent = isExample ? 'Portfolio Example' : 'European Wax Center';
+            document.getElementById('headerDemoText').textContent = isExample ? 'PORTFOLIO EXAMPLE' : 'LAFON DEMO';
+            document.getElementById('headerSubtitle').textContent = isExample ? 'Tools & Resources to coach Team Members' : 'Tools & Resources to coach EWC Team Members';
+            document.getElementById('welcomeText').textContent = isExample
+                ? 'Access tools and calculators designed to help you maximize your performance and earnings.'
+                : 'Access tools and calculators designed to help you maximize your performance and earnings at European Wax Center.';
+            document.getElementById('associateAppCard').style.display = isExample ? 'none' : '';
+            document.getElementById('disclaimerBody').innerHTML = isExample ? EXAMPLE_DISCLAIMER_HTML : LIVE_DISCLAIMER_HTML;
+            document.getElementById('modeBadge').style.display = isExample ? '' : 'none';
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const error = document.getElementById('passwordError');
+            const match = input.value === ADMIN_PASSWORD || config.passwords.some(p => p.enabled && p.password === input.value);
+
+            if (match) {
+                showDisclaimer();
+            } else {
+                error.classList.add('show');
+                input.value = '';
+                input.focus();
+                setTimeout(() => error.classList.remove('show'), 3000);
+            }
         }
 
         function showDisclaimer() {
@@ -941,8 +1013,10 @@
 
         function declineDisclaimer() {
             document.getElementById('disclaimerModal').classList.remove('show');
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordInput').focus();
+            if (config.mode === 'live') {
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
         }
 
         function showContent() {
@@ -955,6 +1029,126 @@
             const content = document.getElementById('helpContent');
             toggle.classList.toggle('open');
             content.classList.toggle('open');
+        }
+
+        // ---- Admin Panel ----
+
+        function openAdminPanel() {
+            document.getElementById('adminGateStep').style.display = '';
+            document.getElementById('adminSettingsStep').style.display = 'none';
+            document.getElementById('adminUnlockBtn').style.display = '';
+            document.getElementById('adminSaveBtn').style.display = 'none';
+            document.getElementById('adminPwInput').value = '';
+            document.getElementById('adminGateError').classList.remove('show');
+            document.getElementById('adminSaveError').classList.remove('show');
+            document.getElementById('adminSaveSuccess').style.opacity = '0';
+            document.getElementById('adminPanel').classList.add('show');
+            setTimeout(() => document.getElementById('adminPwInput').focus(), 100);
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.remove('show');
+        }
+
+        function unlockAdmin() {
+            const pw = document.getElementById('adminPwInput').value;
+            const error = document.getElementById('adminGateError');
+
+            if (pw !== ADMIN_PASSWORD) {
+                error.classList.add('show');
+                return;
+            }
+
+            error.classList.remove('show');
+            draftConfig = JSON.parse(JSON.stringify(config));
+            document.getElementById('adminGateStep').style.display = 'none';
+            document.getElementById('adminSettingsStep').style.display = '';
+            document.getElementById('adminUnlockBtn').style.display = 'none';
+            document.getElementById('adminSaveBtn').style.display = '';
+            document.querySelector(`input[name="modeSelect"][value="${draftConfig.mode}"]`).checked = true;
+            renderPasswordRows();
+        }
+
+        function renderPasswordRows() {
+            const container = document.getElementById('pwRows');
+            container.innerHTML = '';
+
+            draftConfig.passwords.forEach((pw, idx) => {
+                const row = document.createElement('div');
+                row.className = 'pw-row';
+                row.innerHTML = `
+                    <input type="text" class="pw-row-label" placeholder="Label" data-idx="${idx}" data-field="label">
+                    <input type="text" class="pw-row-password" placeholder="Password" data-idx="${idx}" data-field="password">
+                    <label class="pw-row-toggle">
+                        <input type="checkbox" data-idx="${idx}" data-field="enabled"> On
+                    </label>
+                    <button type="button" class="pw-row-remove" data-idx="${idx}">✕</button>
+                `;
+                row.querySelector('[data-field="label"]').value = pw.label;
+                row.querySelector('[data-field="password"]').value = pw.password;
+                row.querySelector('[data-field="enabled"]').checked = !!pw.enabled;
+                container.appendChild(row);
+            });
+
+            container.querySelectorAll('input[data-field]').forEach(input => {
+                input.addEventListener('input', handlePwRowChange);
+                input.addEventListener('change', handlePwRowChange);
+            });
+            container.querySelectorAll('.pw-row-remove').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    draftConfig.passwords.splice(Number(btn.dataset.idx), 1);
+                    renderPasswordRows();
+                });
+            });
+        }
+
+        function handlePwRowChange(e) {
+            const idx = Number(e.target.dataset.idx);
+            const field = e.target.dataset.field;
+            draftConfig.passwords[idx][field] = field === 'enabled' ? e.target.checked : e.target.value;
+        }
+
+        function addPasswordRow() {
+            draftConfig.passwords.push({ id: 'pw_' + Date.now(), label: '', password: '', enabled: true });
+            renderPasswordRows();
+        }
+
+        async function saveAdminSettings() {
+            const error = document.getElementById('adminSaveError');
+            const success = document.getElementById('adminSaveSuccess');
+            const saveBtn = document.getElementById('adminSaveBtn');
+
+            error.classList.remove('show');
+            error.textContent = '';
+            success.style.opacity = '0';
+
+            draftConfig.mode = document.querySelector('input[name="modeSelect"]:checked').value;
+            const cleaned = draftConfig.passwords.filter(p => p.label.trim() && p.password.trim());
+
+            if (draftConfig.mode === 'live' && !cleaned.some(p => p.enabled)) {
+                error.textContent = 'At least one password must be enabled for Live mode.';
+                error.classList.add('show');
+                return;
+            }
+
+            draftConfig.passwords = cleaned;
+            saveBtn.textContent = 'Saving...';
+            saveBtn.disabled = true;
+
+            const ok = await saveConfig(draftConfig);
+
+            if (ok) {
+                config = draftConfig;
+                applyMode(config.mode);
+                success.style.opacity = '1';
+                setTimeout(() => closeAdminPanel(), 1200);
+            } else {
+                error.textContent = 'Failed to save. Please try again.';
+                error.classList.add('show');
+            }
+
+            saveBtn.textContent = 'Save Changes';
+            saveBtn.disabled = false;
         }
     </script>
 </body>
