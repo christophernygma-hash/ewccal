@@ -117,6 +117,9 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border: 0;
+            cursor: pointer;
+            font-family: inherit;
         }
 
         .cta-primary:hover {
@@ -347,6 +350,213 @@
             color: #5b3a82;
         }
 
+
+        /* Booking disclaimer modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(20, 8, 31, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .modal-backdrop.is-open {
+            display: flex;
+            animation: modalFadeIn 0.2s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalPopIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .booking-modal {
+            width: min(680px, 100%);
+            max-height: min(760px, calc(100vh - 48px));
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.99);
+            border-radius: 22px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            animation: modalPopIn 0.25s ease-out;
+        }
+
+        .modal-header {
+            position: relative;
+            padding: 30px 64px 26px 30px;
+            background: linear-gradient(135deg, #e31837 0%, #c91530 100%);
+            color: white;
+        }
+
+        .modal-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            opacity: 0.92;
+        }
+
+        .modal-title {
+            font-size: clamp(1.6rem, 4vw, 2rem);
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus-visible {
+            background: rgba(255, 255, 255, 0.22);
+            transform: scale(1.05);
+            outline: none;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-lead {
+            font-size: 1.08rem;
+            font-weight: 750;
+            line-height: 1.6;
+            color: #242126;
+            margin-bottom: 18px;
+        }
+
+        .modal-body p:not(.modal-lead) {
+            color: #55515a;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .modal-legal-note {
+            margin: 20px 0 24px;
+            padding: 15px 17px;
+            border-radius: 12px;
+            background: #f7f4f9;
+            border-left: 4px solid #5b3a82;
+            color: #55515a;
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .modal-primary,
+        .modal-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .modal-primary {
+            border: 0;
+            background: linear-gradient(135deg, #5b3a82 0%, #432e5f 100%);
+            color: white;
+            box-shadow: 0 6px 16px rgba(91, 58, 130, 0.24);
+        }
+
+        .modal-primary::after {
+            content: '→';
+            margin-left: 8px;
+        }
+
+        .modal-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 58, 130, 0.32);
+        }
+
+        .modal-secondary {
+            border: 1px solid rgba(91, 58, 130, 0.2);
+            background: white;
+            color: #5b3a82;
+        }
+
+        .modal-secondary:hover {
+            background: #f7f4f9;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .booking-trigger {
+            cursor: pointer;
+        }
+
+        @media (max-width: 560px) {
+            .modal-backdrop {
+                padding: 12px;
+                align-items: flex-end;
+            }
+
+            .booking-modal {
+                max-height: calc(100vh - 24px);
+                border-radius: 20px 20px 14px 14px;
+            }
+
+            .modal-header {
+                padding: 26px 58px 22px 22px;
+            }
+
+            .modal-body {
+                padding: 22px;
+            }
+
+            .modal-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-secondary {
+                order: 2;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -403,7 +613,7 @@
                     <div class="logo">European Wax Center</div>
                     <h1>Hampton Roads</h1>
                     <p class="tagline">Your Premier Destination for Expert Waxing Services</p>
-                    <a href="https://www.waxcenter.com/locations" target="_blank" class="cta-primary">
+                    <a href="/locations.html" class="cta-primary booking-trigger" aria-haspopup="dialog" aria-controls="bookingDisclaimer">
                         Book Your Reservation
                     </a>
                 </div>
@@ -452,21 +662,21 @@
                     </div>
                 </div>
 
-                <h2 class="section-title">Visit Us</h2>
-                <p class="section-subtitle">Seven convenient locations serving Hampton Roads</p>
+                <h2 class="section-title">Waxing Options in Hampton Roads</h2>
+                <p class="section-subtitle">Explore independent local waxing providers serving the 757.</p>
 
                 <div class="action-cards">
                     <a href="/locations.html" class="action-card">
                         <span class="action-icon">📍</span>
-                        <h3 class="action-title">Our Centers</h3>
-                        <p class="action-description">Find the EWC location nearest you in Newport News, Chesapeake, Virginia Beach, Williamsburg, Suffolk, or Norfolk.</p>
-                        <span class="action-link">View All Locations</span>
+                        <h3 class="action-title">Local Waxing Options</h3>
+                        <p class="action-description">View independent waxing businesses throughout Hampton Roads, including contact information and directions.</p>
+                        <span class="action-link">View Local Options</span>
                     </a>
 
-                    <a href="https://www.waxcenter.com/locations" target="_blank" class="action-card">
+                    <a href="/locations.html" class="action-card booking-trigger" aria-haspopup="dialog" aria-controls="bookingDisclaimer">
                         <span class="action-icon">📅</span>
-                        <h3 class="action-title">Book Online</h3>
-                        <p class="action-description">Schedule your appointment at any of our locations online for ultimate convenience.</p>
+                        <h3 class="action-title">Book a Waxing Service</h3>
+                        <p class="action-description">Review an important service notice before choosing where to book in Hampton Roads.</p>
                         <span class="action-link">Book Now</span>
                     </a>
                 </div>
@@ -479,7 +689,7 @@
                     <a href="https://www.waxcenter.com" target="_blank" class="footer-link">Learn More</a>
                 </p>
                 <p class="footer-text">
-                    Questions? Visit any of our <a href="/locations.html" class="footer-link">seven locations</a> or call us directly.
+                    Looking for a provider? View <a href="/locations.html" class="footer-link">local waxing options</a> serving Hampton Roads.
                 </p>
                 <div class="associate-portal">
                     <a href="/Bonus/">Associate Resources</a>
@@ -487,5 +697,76 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal-backdrop" id="bookingDisclaimer" role="presentation" aria-hidden="true">
+        <section class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="bookingDisclaimerTitle" aria-describedby="bookingDisclaimerText">
+            <div class="modal-header">
+                <div class="modal-eyebrow">Important Service Notice</div>
+                <h2 class="modal-title" id="bookingDisclaimerTitle">Before You Book</h2>
+                <button class="modal-close" type="button" aria-label="Close service notice">×</button>
+            </div>
+
+            <div class="modal-body" id="bookingDisclaimerText">
+                <p class="modal-lead">
+                    EWC-VA, this website, its webhost, and their respective affiliates do not recommend booking services at the Hampton Roads European Wax Center franchise locations at this time.
+                </p>
+                <p>
+                    This position is based on guest-service concerns, first-hand knowledge of training and operational practices, and reported allegations involving harassment, unlawful employee terminations, workplace conduct, and other franchise-level employment and operational concerns.
+                </p>
+                <p>
+                    The notice concerns the independently owned and operated Hampton Roads franchise locations. It should not be interpreted as a statement regarding every European Wax Center franchise or the national European Wax Center brand.
+                </p>
+
+                <div class="modal-legal-note">
+                    References to allegations are presented as allegations and concerns and are not a statement that every allegation has been adjudicated or proven. Visitors should make their own informed decision when selecting a service provider.
+                </div>
+
+                <div class="modal-actions">
+                    <a class="modal-primary" href="/locations.html">View Local Waxing Options</a>
+                    <button class="modal-secondary" type="button" data-modal-close>Close</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (() => {
+            const modal = document.getElementById('bookingDisclaimer');
+            const triggers = document.querySelectorAll('.booking-trigger');
+            const closeButtons = modal.querySelectorAll('.modal-close, [data-modal-close]');
+            let lastFocusedElement = null;
+
+            function openModal(event) {
+                if (event) event.preventDefault();
+                lastFocusedElement = document.activeElement;
+                modal.classList.add('is-open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
+                modal.querySelector('.modal-close').focus();
+            }
+
+            function closeModal() {
+                modal.classList.remove('is-open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('modal-open');
+                if (lastFocusedElement) lastFocusedElement.focus();
+            }
+
+            triggers.forEach(trigger => trigger.addEventListener('click', openModal));
+            closeButtons.forEach(button => button.addEventListener('click', closeModal));
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) closeModal();
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+                    closeModal();
+                }
+            });
+        })();
+    </script>
+
 </body>
 </html>
