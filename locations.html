@@ -3,86 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Locations | European Wax Center 757</title>
+    <meta name="description" content="Independent local waxing businesses serving Hampton Roads, Virginia.">
+    <title>Local Waxing Options | Hampton Roads</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --purple-dark: #1a0b2e;
+            --purple: #5b3a82;
+            --purple-deep: #432e5f;
+            --red: #e31837;
+            --red-dark: #c91530;
+            --ink: #1b1b1d;
+            --muted: #60606a;
+            --surface: rgba(255, 255, 255, 0.96);
+            --line: rgba(24, 20, 31, 0.09);
+            --shadow: 0 18px 55px rgba(22, 11, 39, 0.18);
+        }
 
-        html, body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
             min-height: 100%;
             overflow-x: hidden;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #1a0b2e 0%, #5b3a82 50%, #e31837 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 50%, var(--red) 100%);
             background-attachment: fixed;
             min-height: 100vh;
             padding: 40px 20px;
+            color: var(--ink);
             position: relative;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            inset: 0;
             background-image:
-                radial-gradient(circle at 20% 50%, rgba(227, 24, 55, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(91, 58, 130, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 18% 48%, rgba(227, 24, 55, 0.16) 0%, transparent 48%),
+                radial-gradient(circle at 82% 78%, rgba(91, 58, 130, 0.2) 0%, transparent 52%);
             animation: pulse 8s ease-in-out infinite;
             pointer-events: none;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.82; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            from { background-position: -1000px 0; }
+            to { background-position: 1000px 0; }
+        }
 
         .container {
-            max-width: 1200px;
+            width: min(1200px, 100%);
             margin: 0 auto;
-            animation: slideIn 0.6s ease-out;
             position: relative;
             z-index: 1;
+            animation: slideIn 0.55s ease-out;
         }
 
         .back-button {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #5b3a82;
-            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.96);
+            color: var(--purple);
+            padding: 12px 22px;
             border-radius: 12px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
             margin-bottom: 24px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .back-button:hover {
-            transform: translateX(-4px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
         }
 
         .back-button::before {
             content: '←';
-            font-size: 1.2rem;
+            font-size: 1.15rem;
+        }
+
+        .back-button:hover {
+            transform: translateX(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--surface);
             backdrop-filter: blur(20px);
             border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #e31837 0%, #c91530 100%);
-            padding: 48px 32px;
+            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+            padding: 52px 32px 48px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -91,279 +122,601 @@
         .header::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.03) 10px, rgba(255, 255, 255, 0.03) 20px);
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.035) 10px,
+                rgba(255, 255, 255, 0.035) 20px
+            );
             animation: shimmer 20s linear infinite;
         }
 
         .header-content {
             position: relative;
             z-index: 1;
+            max-width: 760px;
+            margin: 0 auto;
         }
 
         .logo {
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 12px;
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 2.8rem);
             font-weight: 800;
-            color: white;
+            color: #fff;
+            line-height: 1.15;
             margin-bottom: 12px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            line-height: 1.2;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
         }
 
         .header p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.96);
             font-weight: 500;
         }
 
         .content {
-            padding: 48px 32px;
+            padding: 46px 34px 40px;
         }
 
-        .locations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
+        .intro {
+            max-width: 900px;
+            margin: 0 auto 22px;
+            text-align: center;
         }
 
-        .location-card {
-            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
-            border-radius: 16px;
-            padding: 28px;
-            border: 2px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .location-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #5b3a82, #e31837);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .location-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-            border-color: rgba(91, 58, 130, 0.3);
-        }
-
-        .location-card:hover::before {
-            opacity: 1;
-        }
-
-        .location-name {
-            font-size: 1.3rem;
+        .intro h2 {
+            color: var(--red);
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            line-height: 1.3;
+            margin-bottom: 10px;
             font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .location-name::before {
-            content: '📍';
-            font-size: 1.4rem;
+        .intro p {
+            color: #3f3f47;
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
-        .location-info {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .info-item {
+        .disclaimer {
+            max-width: 960px;
+            margin: 0 auto 36px;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            font-size: 0.95rem;
-            color: #333;
-            line-height: 1.6;
+            gap: 14px;
+            padding: 18px 20px;
+            border: 1px solid rgba(91, 58, 130, 0.16);
+            border-left: 4px solid var(--purple);
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(91, 58, 130, 0.065), rgba(227, 24, 55, 0.035));
         }
 
-        .info-icon {
-            flex-shrink: 0;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #5b3a82, #7b5ba2);
-            color: white;
-            border-radius: 8px;
+        .disclaimer-icon {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: var(--purple);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        .disclaimer p {
+            color: #55545d;
+            font-size: 0.83rem;
+            line-height: 1.65;
+        }
+
+        .disclaimer strong {
+            color: var(--purple-deep);
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .section-heading h2 {
+            color: var(--purple-deep);
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .business-card {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, #ffffff 0%, #fbfafc 100%);
+            border-radius: 17px;
+            border: 1px solid var(--line);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .business-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--purple), var(--red));
+        }
+
+        .business-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 13px 34px rgba(37, 23, 50, 0.12);
+            border-color: rgba(91, 58, 130, 0.24);
+        }
+
+        .card-topline {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            margin-top: 2px;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
         }
 
-        .info-text {
+        .city-pill,
+        .rating-pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.25px;
+            white-space: nowrap;
+        }
+
+        .city-pill {
+            padding: 6px 10px;
+            color: var(--purple-deep);
+            background: rgba(91, 58, 130, 0.09);
+        }
+
+        .rating-pill {
+            padding: 6px 9px;
+            color: #8a4b00;
+            background: #fff4df;
+        }
+
+        .business-name {
+            color: #17171a;
+            font-size: 1.18rem;
+            line-height: 1.3;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .business-type {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin-bottom: 19px;
+        }
+
+        .business-info {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
             flex: 1;
         }
 
-        .info-text strong {
+        .info-row {
+            display: grid;
+            grid-template-columns: 30px minmax(0, 1fr);
+            gap: 10px;
+            align-items: start;
+        }
+
+        .info-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--purple), #77549d);
+            color: #fff;
+            font-size: 0.78rem;
+        }
+
+        .info-copy {
+            min-width: 0;
+            color: #38383f;
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .info-copy strong {
             display: block;
-            color: #5b3a82;
-            font-weight: 700;
-            margin-bottom: 4px;
-            font-size: 0.85rem;
+            color: var(--purple);
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.65px;
+            margin-bottom: 2px;
         }
 
         .phone-link {
-            color: #e31837;
+            color: var(--red);
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
+            font-weight: 750;
         }
 
         .phone-link:hover {
-            color: #c91530;
             text-decoration: underline;
         }
 
-        .directions-btn {
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .action-btn {
+            min-height: 42px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #5b3a82 0%, #432e5f 100%);
-            color: white;
-            padding: 10px 20px;
+            justify-content: center;
+            gap: 7px;
             border-radius: 10px;
+            padding: 10px 12px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-top: 12px;
-            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.76rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
 
-        .directions-btn:hover {
+        .action-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(91, 58, 130, 0.4);
         }
 
-        .directions-btn::after {
-            content: '→';
+        .action-primary {
+            color: #fff;
+            background: linear-gradient(135deg, var(--purple), var(--purple-deep));
+            box-shadow: 0 5px 12px rgba(91, 58, 130, 0.2);
+        }
+
+        .action-secondary {
+            color: var(--purple-deep);
+            background: #fff;
+            border: 1px solid rgba(91, 58, 130, 0.2);
         }
 
         .footer {
             text-align: center;
             padding: 24px 32px;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, #f6f5f7 0%, #ece9ef 100%);
+            border-top: 1px solid var(--line);
         }
 
         .footer p {
-            font-size: 0.85rem;
-            color: #666;
+            max-width: 850px;
+            margin: 0 auto;
+            color: #6b6870;
+            font-size: 0.78rem;
             line-height: 1.6;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 980px) {
+            .business-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 680px) {
             body {
                 padding: 20px 10px;
             }
 
-            .header {
-                padding: 32px 20px;
+            .back-button {
+                margin-bottom: 16px;
             }
 
-            .header h1 {
-                font-size: 1.8rem;
+            .glass-card {
+                border-radius: 20px;
+            }
+
+            .header {
+                padding: 38px 20px 35px;
+            }
+
+            .header p {
+                font-size: 0.95rem;
             }
 
             .content {
-                padding: 32px 20px;
+                padding: 34px 18px 30px;
             }
 
-            .locations-grid {
+            .intro {
+                margin-bottom: 18px;
+            }
+
+            .disclaimer {
+                margin-bottom: 30px;
+                padding: 16px;
+            }
+
+            .business-grid {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
 
-            .location-card {
-                padding: 24px;
+            .business-card {
+                padding: 22px;
             }
 
-            .location-name {
-                font-size: 1.1rem;
+            .footer {
+                padding: 22px 18px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .card-topline {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <main class="container">
         <a href="/" class="back-button">Back to Home</a>
 
-        <div class="glass-card">
-            <div class="header">
+        <section class="glass-card" aria-labelledby="page-title">
+            <header class="header">
                 <div class="header-content">
                     <div class="logo">European Wax Center</div>
-                    <h1>Our 757 Locations</h1>
-                    <p>Seven Convenient Centers Serving Hampton Roads</p>
+                    <h1 id="page-title">Waxing Services in Hampton Roads</h1>
+                    <p>Independent local options throughout the 757</p>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="intro">
+                    <h2>Looking for waxing services or additional information?</h2>
+                    <p>
+                        You may wish to contact one of the independent local waxing providers below.
+                        We have gathered convenient contact information for several highly rated businesses serving Hampton Roads.
+                    </p>
+                </div>
+
+                <aside class="disclaimer" aria-label="Third-party business disclaimer">
+                    <div class="disclaimer-icon" aria-hidden="true">i</div>
+                    <p>
+                        <strong>Third-party business notice:</strong> European Wax Center 757 (EWC-VA), this website, and its owners or operators are not affiliated with, endorsed by, sponsored by, or responsible for any of the independent businesses listed below. These listings are provided solely as a courtesy and do not constitute a guarantee of services, availability, pricing, policies, or results. EWC-VA assumes no responsibility for products, services, transactions, or experiences provided by any third party. Please contact each business directly to confirm current information. Business details reviewed August 2026.
+                    </p>
+                </aside>
+
+                <div class="section-heading">
+                    <h2>Highly Rated Local Waxing Options</h2>
+                    <p>Independent providers across the Southside and Peninsula. Ratings and business information may change over time.</p>
+                </div>
+
+                <div class="business-grid">
+                    <article class="business-card">
+                        <div class="card-topline">
+                            <span class="city-pill">Chesapeake</span>
+                            <span class="rating-pill">★ Highly Rated</span>
+                        </div>
+                        <h3 class="business-name">Opal Waxing INC</h3>
+                        <p class="business-type">Full-body waxing studio</p>
+                        <div class="business-info">
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">📍</div>
+                                <div class="info-copy">
+                                    <strong>Address</strong>
+                                    4107 Portsmouth Blvd, Ste 121<br>Chesapeake, VA 23321
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">☎</div>
+                                <div class="info-copy">
+                                    <strong>Phone</strong>
+                                    <a class="phone-link" href="tel:7573354141">(757) 335-4141</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="action-btn action-primary" href="https://www.google.com/maps/dir/?api=1&destination=4107+Portsmouth+Blvd+Ste+121+Chesapeake+VA+23321" target="_blank" rel="noopener noreferrer">Directions →</a>
+                            <a class="action-btn action-secondary" href="https://www.opalwaxing.co/" target="_blank" rel="noopener noreferrer">Website ↗</a>
+                        </div>
+                    </article>
+
+                    <article class="business-card">
+                        <div class="card-topline">
+                            <span class="city-pill">Norfolk</span>
+                            <span class="rating-pill">★ Highly Rated</span>
+                        </div>
+                        <h3 class="business-name">Smooth: A Skin &amp; Waxing Boutique</h3>
+                        <p class="business-type">Waxing and skincare boutique</p>
+                        <div class="business-info">
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">📍</div>
+                                <div class="info-copy">
+                                    <strong>Address</strong>
+                                    215 E City Hall Ave<br>Norfolk, VA 23510
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">☎</div>
+                                <div class="info-copy">
+                                    <strong>Phone</strong>
+                                    <a class="phone-link" href="tel:7576033046">(757) 603-3046</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="action-btn action-primary" href="https://www.google.com/maps/dir/?api=1&destination=215+E+City+Hall+Ave+Norfolk+VA+23510" target="_blank" rel="noopener noreferrer">Directions →</a>
+                            <a class="action-btn action-secondary" href="https://www.smoothdowntown.com/" target="_blank" rel="noopener noreferrer">Website ↗</a>
+                        </div>
+                    </article>
+
+                    <article class="business-card">
+                        <div class="card-topline">
+                            <span class="city-pill">Virginia Beach</span>
+                            <span class="rating-pill">★ Highly Rated</span>
+                        </div>
+                        <h3 class="business-name">WAXED</h3>
+                        <p class="business-type">Body waxing and brow studio</p>
+                        <div class="business-info">
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">📍</div>
+                                <div class="info-copy">
+                                    <strong>Address</strong>
+                                    2133 Upton Dr, Ste 104<br>Virginia Beach, VA 23454
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">☎</div>
+                                <div class="info-copy">
+                                    <strong>Phone</strong>
+                                    <a class="phone-link" href="tel:7573302233">(757) 330-2233</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="action-btn action-primary" href="https://www.google.com/maps/dir/?api=1&destination=2133+Upton+Dr+Ste+104+Virginia+Beach+VA+23454" target="_blank" rel="noopener noreferrer">Directions →</a>
+                            <a class="action-btn action-secondary" href="https://www.waxedvb.com/" target="_blank" rel="noopener noreferrer">Website ↗</a>
+                        </div>
+                    </article>
+
+                    <article class="business-card">
+                        <div class="card-topline">
+                            <span class="city-pill">Yorktown</span>
+                            <span class="rating-pill">★ Highly Rated</span>
+                        </div>
+                        <h3 class="business-name">Snatch'd Brazilian Wax &amp; Sugaring</h3>
+                        <p class="business-type">Waxing and sugaring studio</p>
+                        <div class="business-info">
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">📍</div>
+                                <div class="info-copy">
+                                    <strong>Address</strong>
+                                    2808 George Washington Memorial Hwy, Ste 203<br>Yorktown, VA 23693
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">☎</div>
+                                <div class="info-copy">
+                                    <strong>Phone</strong>
+                                    <a class="phone-link" href="tel:7575935671">(757) 593-5671</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="action-btn action-primary" href="https://www.google.com/maps/dir/?api=1&destination=2808+George+Washington+Memorial+Hwy+Ste+203+Yorktown+VA+23693" target="_blank" rel="noopener noreferrer">Directions →</a>
+                            <a class="action-btn action-secondary" href="https://www.fresha.com/lvp/snatchd-brazilian-wax-and-sugaring-george-washington-memorial-highway-yorktown-NowJ2D" target="_blank" rel="noopener noreferrer">Listing ↗</a>
+                        </div>
+                    </article>
+
+                    <article class="business-card">
+                        <div class="card-topline">
+                            <span class="city-pill">Newport News</span>
+                            <span class="rating-pill">★ Highly Rated</span>
+                        </div>
+                        <h3 class="business-name">Bare Bikini &amp; Brow Bar</h3>
+                        <p class="business-type">Full-body waxing and brow studio</p>
+                        <div class="business-info">
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">📍</div>
+                                <div class="info-copy">
+                                    <strong>Address</strong>
+                                    12638 Jefferson Ave, #20<br>Newport News, VA 23602
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">☎</div>
+                                <div class="info-copy">
+                                    <strong>Phone</strong>
+                                    <a class="phone-link" href="tel:7572347013">(757) 234-7013</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="action-btn action-primary" href="https://www.google.com/maps/dir/?api=1&destination=12638+Jefferson+Ave+20+Newport+News+VA+23602" target="_blank" rel="noopener noreferrer">Directions →</a>
+                            <a class="action-btn action-secondary" href="https://www.barebikinibrowbar.com/" target="_blank" rel="noopener noreferrer">Website ↗</a>
+                        </div>
+                    </article>
+
+                    <article class="business-card">
+                        <div class="card-topline">
+                            <span class="city-pill">Suffolk</span>
+                            <span class="rating-pill">★ Highly Rated</span>
+                        </div>
+                        <h3 class="business-name">EureXclusive Wax Studio</h3>
+                        <p class="business-type">Waxing, brows and skincare studio</p>
+                        <div class="business-info">
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">📍</div>
+                                <div class="info-copy">
+                                    <strong>Address</strong>
+                                    1548B Holland Rd<br>Suffolk, VA 23434
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-icon" aria-hidden="true">☎</div>
+                                <div class="info-copy">
+                                    <strong>Phone</strong>
+                                    <a class="phone-link" href="tel:7576336528">(757) 633-6528</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="action-btn action-primary" href="https://www.google.com/maps/dir/?api=1&destination=1548B+Holland+Rd+Suffolk+VA+23434" target="_blank" rel="noopener noreferrer">Directions →</a>
+                            <a class="action-btn action-secondary" href="https://www.google.com/search?q=EureXclusive+Wax+Studio+Suffolk+VA" target="_blank" rel="noopener noreferrer">Business Info ↗</a>
+                        </div>
+                    </article>
                 </div>
             </div>
 
-            <div class="content">
-                <div class="locations-grid">
-                    <!-- Newport News -->
-                    <div class="location-card">
-                        <h3 class="location-name">Newport News</h3>
-                        <div class="location-info">
-                            <div class="info-item">
-                                <div class="info-icon">📍</div>
-                                <div class="info-text">
-                                    <strong>Address</strong>
-                                    12080 Jefferson Ave, Suite 220<br>
-                                    Newport News, VA 23606
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-icon">📞</div>
-                                <div class="info-text">
-                                    <strong>Phone</strong>
-                                    <a href="tel:7579135580" class="phone-link">(757) 913-5580</a>
-                                </div>
-                            </div>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=12080+Jefferson+Ave+Suite+220+Newport+News+VA+23606" target="_blank" class="directions-btn">Get Directions</a>
-                        </div>
-                    </div>
-
-                    <!-- Chesapeake -->
-                    <div class="location-card">
-                        <h3 class="location-name">Chesapeake</h3>
-                        <div class="location-info">
-                            <div class="info-item">
-                                <div class="info-icon">📍</div>
-                                <div class="info-text">
-                                    <strong>Address</strong>
-                                    1412 Greenbrier Pkwy<br>
-                                    Chesapeake, VA 23320
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-icon">📞</div>
-                                <div class="info-text">
-                                    <strong>Phone</strong>
-                                    <a href="tel:7575127929" class="phone-link">(757) 512-7929</a>
-                                </div>
-                            </div>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=1412+Greenbrier+Pkwy+Chesapeake+VA+23320" target="_blank" class="directions-btn">Get Directions</a>
+            <footer class="footer">
+                <p>
+                    Third-party names and trademarks belong to their respective owners. Inclusion on this page is informational only and does not imply partnership, endorsement, or affiliation with European Wax Center or EWC-VA.
+                </p>
+            </footer>
+        </section>
+    </main>
+</body>
+</html>                            <a href="https://www.google.com/maps/dir/?api=1&destination=1412+Greenbrier+Pkwy+Chesapeake+VA+23320" target="_blank" class="directions-btn">Get Directions</a>
                         </div>
                     </div>
 
